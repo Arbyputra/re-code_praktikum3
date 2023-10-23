@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from "react";
+import { StatusBar } from "react-native";
+import { GluestackUIProvider, Text } from "@gluestack-ui/themed";
+import Header from "./components/header";
+import Separator from "./components/separator";
+import List from "./screens/list";
+import Article from "./screens/article";
+import { config } from "@gluestack-ui/config"
 
-export default function App() {
+// Functional Component
+const App = () => {
+  // State Declaration
+  const [page, setPage] = useState("list");
+
+  // Arrow Function inside Functional Component
+  const changePage = (pageName) => {
+    // Change state value
+    setPage(pageName);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GluestackUIProvider config={config}>
+      <StatusBar style="light" backgroundColor="#AA0002" />
+      <Header onListPress={() => changePage("list")} onArticlePress={() => changePage("article")} />
+      <Separator height={30} />
+      {page === "list" ? <List /> : page === "article" ? <Article /> : null}
+    </GluestackUIProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
